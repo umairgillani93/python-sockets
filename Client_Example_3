@@ -1,0 +1,27 @@
+"""
+client_example_3:
+created by: UG_PYTHON
+
+"""
+
+
+import socket
+import threading
+
+host = '192.168.1.6'
+port = 9999
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+s.connect((host,port))
+
+print('Connecting with Server..')
+
+server_response = s.recv(1024).decode('utf-8')
+print(server_response)
+
+cmd = input('Enter the command: ')
+
+send_command = s.send(str.encode(cmd))
+
+server_reply = s.recv(1024).decode('utf-8')
+print(server_reply)
