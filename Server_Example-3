@@ -1,0 +1,47 @@
+"""
+server_example_3:
+created by: UG_PYTHON
+
+"""
+
+
+
+import socket
+import threading
+
+host = '0.0.0.0'
+port = 9999
+
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.bind((host,port))
+s.listen(5)
+
+print('listeing on host: {} | port: {} '.format(host,port))
+
+def client_handle(client_socket):
+
+    server_response = client_socket.send(str.encode('ACK!'))
+    receive_cmd = client_socket.recv(1024).decode('utf-8')
+    received_commands(receive_cmd)
+    client_socket.close()
+
+
+def received_commands(rcv_str):
+
+    if rcv_str == 'hi server':
+        print('Hello Client: ' + (address[0]) + '|' + str(address[1]))
+
+    elif rcv_str == 'my ip':
+        print(address[0])
+
+    elif rcv_str == 'my port':
+        print(address[1])
+
+
+
+while True:
+
+    client, address = s.accept()
+    print('connection established.. \nhost: {} | port: {} '.format(address[0], str(address[1])))
+    client_handler = threading.Thread(target = client_handle, args = (client,))
+    client_handler.start()
